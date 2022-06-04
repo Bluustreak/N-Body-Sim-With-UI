@@ -3,7 +3,7 @@
 using NbodyWithUI.Models;
 Console.WriteLine("Hi, I'm Bluu and this is my N-body sim :O\n\n");
 
-while (!OptionsMenu.StartSim)
+while (!OptionsMenu.StartSim && !OptionsMenu.Quit)
 {
     OptionsMenu.printMenu();
 }
