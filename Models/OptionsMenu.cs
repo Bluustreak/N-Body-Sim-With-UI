@@ -55,6 +55,7 @@ namespace NbodyWithUI.Models
             else if (input == "4")
             {
                 StartSim = true;
+                Console.WriteLine("There should now be an PNG of your simulation in the location of the exe!");
             }
             else if (input == "9")
             {
