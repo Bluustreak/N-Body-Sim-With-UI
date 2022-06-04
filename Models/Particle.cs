@@ -11,9 +11,9 @@ namespace NbodyWithUI.Models
         public double Mass { get; set; }
         public ushort Radius { get; set; }
         public (double x, double y) Position { get; set; }
-        public uint ParticleCoordTrailLimit { get; set; } = 100;
+        private uint ParticleCoordTrailLimit { get; set; } = 100;
 
-        private List<(double x, double y)> Last100Coordinates { get; set; }
+        private List<(double x, double y)> Last100Coordinates { get; set; } = new List<(double x, double y)>();
         // a function to add coordinates in a controlled fashion, instead of accessing the list directly
         public void addCoordToTrail((double a, double b) coordXY) 
         {
@@ -22,7 +22,7 @@ namespace NbodyWithUI.Models
             if (this.Last100Coordinates.Count > ParticleCoordTrailLimit)
                 this.Last100Coordinates.RemoveAt(this.Last100Coordinates.Count - 1);
         }
-        public (double x, double y, double absDist) currentVelocityXYC(int timestep)
+        public (double x, double y, double absDist) currentVelocityXYC(int timestep) // used C as the hypothenuse is usually named in a ABC triangle
         {
             var lastIndex = this.Last100Coordinates.Count - 1;
 
@@ -43,7 +43,6 @@ namespace NbodyWithUI.Models
             var dy = this.Last100Coordinates[lastIndex].y - this.Last100Coordinates[lastIndex - 1].y;
             
             var radToDeg = 180 / Math.PI;
-
             var result = Math.Atan2(dx, dy) * radToDeg;
 
             return result;
@@ -70,7 +69,7 @@ namespace NbodyWithUI.Models
 
             return false;
         }
-        private double totalDistplacementDuringStep(Particle other, int timeStep)
+        public double totalDistplacementDuringStep(Particle other, int timeStep)
         {
             var distance = distanceBetweenCenters(other);
             double G = 6.67408 * Math.Pow(10, -11);
@@ -80,15 +79,21 @@ namespace NbodyWithUI.Models
 
             var displacement = acceleration*timeStep;
 
+            if(true)
+            {
+                Console.WriteLine($"distance: {distance}");
+                Console.WriteLine($"absForce: {absForce}");
+                Console.WriteLine($"accelera: {acceleration}");
+                Console.WriteLine($"displace: {displacement}");
+            }
+
             return displacement;
         }
 
-        public Particle(List<(double x, double y)> last100Coordinates, double mass, (double x, double y) position, uint particleCoordTrailLimit)
+        public Particle(double mass, (double x, double y) position)
         {
-            this.Last100Coordinates = last100Coordinates;
             Mass = mass;
             Position = position;
-            ParticleCoordTrailLimit = particleCoordTrailLimit;
         }
     }
 }
