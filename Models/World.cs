@@ -8,9 +8,15 @@ namespace NbodyWithUI.Models
 {
     public class World
     {
+        public World(int width, int height)
+        {
+            Width = width;
+            Height = height;
+        }
+
         // width and height is a symmetrical meassure outwards from the 0,0 center point, so width=200, would make a 400 wide world in total
-        public int Width { get; set; } = 2;
-        public int Height { get; set; } = 2;
+        public int Width { get; set; }
+        public int Height { get; set; }
         public byte ParticleCoordTrailLimit { get; set; } = 3;
 
         public List<Particle> Particles { get; set; } = new List<Particle>();
