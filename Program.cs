@@ -11,8 +11,8 @@ Particle p2 = new Particle(1.00f,0.1f,
                             1, 0,
                             0, -0.000001);
 Particle p3 = new Particle(0.1f, 0.1f,
-                            1, 1, 
-                            0, 0.000001);
+                            0, 1, 
+                            0.000003, 0.0);
 
 World world = new World(20,20);
 world.Particles.Add(p1);
