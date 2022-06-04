@@ -15,4 +15,8 @@
     <Folder Include="Plots\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="bin\Debug\net6.0\NbodyWithUI.exe" />
+  </ItemGroup>
+
 </Project>

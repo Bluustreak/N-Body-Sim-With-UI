@@ -45,7 +45,7 @@ namespace NbodyWithUI.Models
 
         public void plotWorldScottPlot(string options)
         {
-            if(Particles.Count >0)
+            if (Particles.Count > 0)
             {
                 //(double[] X, double[] Y) dataXY = (new double[] { 1, 2, 3, 4, 5 }, new double[] { 1, 2, 3, 4, 5 });
                 var plt = new ScottPlot.Plot(800, 800);
@@ -58,7 +58,7 @@ namespace NbodyWithUI.Models
                     {
                         foreach (var posX in p.CoordinateHistory.X)
                         {
-                            if(Math.Abs(posX) > this.Width/2)
+                            if (Math.Abs(posX) > this.Width / 2)
                             {
                                 hasLeftTheWorld = true;
                                 breakPoint = p.CoordinateHistory.X.IndexOf(posX);
@@ -80,7 +80,7 @@ namespace NbodyWithUI.Models
                 }
 
                 if (breakPoint == 0)
-                    breakPoint = Particles[0].CoordinateHistory.X.Count()-1;
+                    breakPoint = Particles[0].CoordinateHistory.X.Count() - 1;
                 int resultAmount = 0;
                 foreach (var particle in Particles)
                 {
