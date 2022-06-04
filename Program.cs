@@ -19,10 +19,12 @@ world.Particles.Add(p1);
 world.Particles.Add(p2);
 world.Particles.Add(p3);
 
+int totalSimTime = 600000;
+int resolution = 30; // secs per physics step
 
-for (int i = 0; i < 20000; i++)
+for (int i = 0; i < (totalSimTime/resolution); i++)
 {
-    world.stepOnce(30);
+    world.stepOnce(resolution);
 }
 
 world.plotWorldScottPlot("limitToWorld"); // "limitToWorld" ends the graphing when a particle leavs the boundries.
