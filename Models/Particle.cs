@@ -8,10 +8,10 @@ namespace NbodyWithUI.Models
 {
     public class Particle
     {
-        public double Mass { get; set; }
-        public ushort Radius { get; set; }
+        public float Mass { get; set; }
+        public float Radius { get; set; }
         public (double x, double y) Position { get; set; }
-        private uint ParticleCoordTrailLimit { get; set; } = 100;
+        private byte ParticleCoordTrailLimit { get; set; } = 100;
 
         private List<(double x, double y)> Last100Coordinates { get; set; } = new List<(double x, double y)>();
         // a function to add coordinates in a controlled fashion, instead of accessing the list directly
@@ -85,15 +85,18 @@ namespace NbodyWithUI.Models
                 Console.WriteLine($"absForce: {absForce}");
                 Console.WriteLine($"accelera: {acceleration}");
                 Console.WriteLine($"displace: {displacement}");
+                Console.WriteLine($"collided: {hasCollidedWith(other)}");
+                Console.WriteLine($"distSurf: {distanceBetweenSurfaces(other)}");
             }
 
             return displacement;
         }
 
-        public Particle(double mass, (double x, double y) position)
+        public Particle(float mass, float radius, (double x, double y) position)
         {
             Mass = mass;
             Position = position;
+            Radius = radius;
         }
     }
 }
