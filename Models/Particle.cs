@@ -10,8 +10,9 @@ namespace NbodyWithUI.Models
     {
         public float Mass { get; set; }
         public float Radius { get; set; }
-        public (double x, double y) Position { get; set; }
-        private byte ParticleCoordTrailLimit { get; set; } = 100;
+        public double PositionX { get; set; }
+        public double PositionY { get; set; }
+        private byte ParticleCoordTrailLimit { get; set; } = 3;
 
         private List<(double x, double y)> Last100Coordinates { get; set; } = new List<(double x, double y)>();
         // a function to add coordinates in a controlled fashion, instead of accessing the list directly
@@ -19,15 +20,25 @@ namespace NbodyWithUI.Models
         {
             this.Last100Coordinates.Add(coordXY);
 
-            if (this.Last100Coordinates.Count > ParticleCoordTrailLimit)
-                this.Last100Coordinates.RemoveAt(this.Last100Coordinates.Count - 1);
+           // if (this.Last100Coordinates.Count > ParticleCoordTrailLimit)
+           //     this.Last100Coordinates.RemoveAt(this.Last100Coordinates.Count - 1);
         }
-        public (double x, double y, double absDist) currentVelocityXYC(int timestep) // used C as the hypothenuse is usually named in a ABC triangle
+        public (double x, double y, double absDist) currentVelocityXYC(int timestep) // used C, as the hypothenuse is usually named in a ABC triangle
         {
+            double dx, dy;
             var lastIndex = this.Last100Coordinates.Count - 1;
-
-            var dx = this.Last100Coordinates[lastIndex].x - this.Last100Coordinates[lastIndex - 1].x;
-            var dy = this.Last100Coordinates[lastIndex].y - this.Last100Coordinates[lastIndex - 1].y;
+            bool dontcheckagain = false;
+            if (dontcheckagain || Last100Coordinates.Count() >= 2)
+            {
+                dontcheckagain = true;
+                dx = this.Last100Coordinates[lastIndex].x - this.Last100Coordinates[lastIndex - 1].x;
+                dy = this.Last100Coordinates[lastIndex].y - this.Last100Coordinates[lastIndex - 1].y;
+            }
+            else
+            {
+                dx = 0;
+                dy = 0;
+            }
 
             var absDist = Math.Sqrt(dx * dx + dy * dy);
 
@@ -49,15 +60,15 @@ namespace NbodyWithUI.Models
         }
         public (double dx,double dy, double diagDistance) distanceBetweenCenters(Particle other)
         {
-            var dx = other.Position.x - this.Position.x;
-            var dy = other.Position.y - this.Position.y;
-            var distance = Math.Sqrt(dx * dx + dy * dy);
-            return (dx, dy, distance);
+            var dx = other.PositionX - this.PositionX;
+            var dy = other.PositionY - this.PositionY;
+            var diagDistance = Math.Sqrt(dx * dx + dy * dy);
+            return (dx, dy, diagDistance);
         }
         private double distanceBetweenSurfaces(Particle other)
         {
-            var dx = this.Position.x - other.Position.x;
-            var dy = this.Position.y - other.Position.y;
+            var dx = this.PositionX - other.PositionX;
+            var dy = this.PositionY - other.PositionY;
             var distance = Math.Sqrt(dx*dx + dy*dy);
             var result = distance - this.Radius - other.Radius;
             return result;
@@ -69,17 +80,25 @@ namespace NbodyWithUI.Models
 
             return false;
         }
-        public double totalDistplacementDuringStep(Particle other, int timeStep)
+        public (double dx, double dy) totalDistplacementDuringStep(Particle other, int timeStep)
         {
-            var distance = distanceBetweenCenters(other);
+            var distance = this.distanceBetweenCenters(other);
             double G = 6.67408 * Math.Pow(10, -11);
             var absForce = (G * this.Mass * other.Mass) / Math.Pow(distance.diagDistance,2);
 
-            var acceleration = absForce/this.Mass;
+            //var directionX = Math.Sign(distance.dx);
+            //var directionY = Math.Sign(distance.dy);
+            var acceleration = (((absForce / this.Mass) * (distance.dx / distance.diagDistance)),
+                                ((absForce / this.Mass) * (distance.dy / distance.diagDistance)));
 
-            var displacement = acceleration*timeStep;
 
-            if(true)
+            //displacement =initial_position + initial_speed*time+1/2*acceleration*time^2,
+            //but I'm not using initial position here, it comes in the world-file, row 33,34
+            var currVel = this.currentVelocityXYC(timeStep);
+            var displacement = (currVel.x * timeStep + 1 / 2f * acceleration.Item1 * Math.Pow(timeStep, 2),
+                                currVel.y * timeStep + 1 / 2f * acceleration.Item2 * Math.Pow(timeStep, 2));
+
+            if (true)
             {
                 Console.WriteLine($"distance: {distance}");
                 Console.WriteLine($"absForce: {absForce}");
@@ -87,16 +106,20 @@ namespace NbodyWithUI.Models
                 Console.WriteLine($"displace: {displacement}");
                 Console.WriteLine($"collided: {hasCollidedWith(other)}");
                 Console.WriteLine($"distSurf: {distanceBetweenSurfaces(other)}");
+                Console.WriteLine($"");
             }
 
             return displacement;
         }
 
-        public Particle(float mass, float radius, (double x, double y) position)
+        public Particle(float mass, float radius, double positionX, double positionY)
         {
             Mass = mass;
-            Position = position;
+            PositionX = positionX;
+            PositionY = positionY;
             Radius = radius;
+
+            Last100Coordinates.Add((positionX, positionY));
         }
     }
 }
