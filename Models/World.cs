@@ -13,11 +13,26 @@ namespace NbodyWithUI.Models
         public int Height { get; set; }
         public byte ParticleCoordTrailLimit { get; set; } = 100;
 
-        public List<Particle> Particles { get; set; }
+        public List<Particle> Particles { get; set; } = new List<Particle>();
 
-        public void stepOnce()
+        public void stepOnce(int timeStep)
         {
-
+            foreach (var p1 in Particles)
+            {
+                double totalDispX = 0;
+                double totalDispY = 0;
+                foreach (var p2 in Particles)
+                {
+                    if(p1!=p2)
+                    {
+                        var displacement = p1.totalDistplacementDuringStep(p2, timeStep);
+                        totalDispX += displacement.dx;
+                        totalDispY += displacement.dy;
+                    }
+                }
+                p1.PositionX += totalDispX;
+                p1.PositionY += totalDispY;
+            }
         }
     }
 }
