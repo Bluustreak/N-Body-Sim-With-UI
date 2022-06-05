@@ -8,8 +8,8 @@ namespace NbodyWithUI.Models
 {
     static class OptionsMenu
     {
-        public static int TotalSimTime = 600000;
-        public static int Resolution = 30;
+        public static int TotalSimTime = 60000000;
+        public static int Resolution = 3000;
         public static int NumberOfParticles = 3;
         public static bool StartSim = false;
         public static bool Quit = false;
