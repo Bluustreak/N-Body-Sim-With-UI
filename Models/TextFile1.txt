@@ -1,0 +1,55 @@
+﻿ public void plotWorldScottPlot()
+        {
+            if (Particles.Count > 0)
+            {
+                var plt = new ScottPlot.Plot(800, 800);
+
+                //int breakPoint = 0;
+                //bool hasLeftTheWorld = false;
+                //if (options.Contains("limitToWorld"))
+                //{
+                //    foreach (var p in Particles)
+                //    {
+                //        foreach (var posX in p.CoordinateHistory.X)
+                //        {
+                //            if (Math.Abs(posX) > this.Width / 2)
+                //            {
+                //                hasLeftTheWorld = true;
+                //                breakPoint = p.CoordinateHistory.X.IndexOf(posX);
+                //                break;
+                //            }
+                //        }
+                //        foreach (var posY in p.CoordinateHistory.Y)
+                //        {
+                //            if (Math.Abs(posY) > this.Width / 2)
+                //            {
+                //                hasLeftTheWorld = true;
+                //                breakPoint = p.CoordinateHistory.Y.IndexOf(posY);
+                //                break;
+                //            }
+                //        }
+                //        if (hasLeftTheWorld)
+                //            break;
+                //    }
+                //}
+
+                //if (breakPoint == 0)
+                //    breakPoint = Particles[0].CoordinateHistory.X.Count() - 1;
+                //int resultAmount = 0;
+                //foreach (var particle in Particles)
+                //{
+                //    var Xcoords = particle.CoordinateHistory.X.Take(breakPoint).ToArray();
+                //    var Ycoords = particle.CoordinateHistory.Y.Take(breakPoint).ToArray();
+                //    plt.AddScatter(Xcoords, Ycoords);
+                //    resultAmount = particle.CoordinateHistory.X.Take(breakPoint).Count();
+                //}
+
+                plt.AddScatter(Xcoords, Ycoords);
+
+                //Console.WriteLine("Number of points per particle: " + Particles[0].CoordinateHistory.X.Count());
+                //Console.WriteLine("Number of points per particle taken: " + resultAmount);
+                Console.WriteLine("Number of points in simulation: " + Xcoords.Length);
+                if (Particles.Count > 0)
+                    plt.SaveFig("scottplotfig.png");
+            }
+        }
