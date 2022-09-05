@@ -25,7 +25,7 @@ namespace NbodyWithUI.Models
             Console.WriteLine("options (no input parsing yet, only input positive integers):");
             Console.WriteLine("1. Set the total sim time, currently: " + TotalSimTime);
             Console.WriteLine("2. Set the resolution, currently: " + Resolution);
-            Console.WriteLine("3. (IS NOT YET IMPLEMENTED)Set the amount of randomized particles, currently: " + NumberOfParticles);
+            Console.WriteLine("3. Set the amount of randomized particles, currently: " + NumberOfParticles);
             Console.WriteLine("9. Quit the program");
             Console.WriteLine("4. START SIM!!!");
             Console.WriteLine("\n");

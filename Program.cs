@@ -30,10 +30,10 @@ while (!OptionsMenu.Quit)
     OptionsMenu.printMenu();
 
 
-    World world = new World(20, 20);
+    World world = new World(2, 2);
 
-    if (true)
-    {
+    //if (true)
+    //{
         for (int i = 0; i < OptionsMenu.NumberOfParticles; i++)
         {
             Random rnd = new Random();
@@ -41,7 +41,7 @@ while (!OptionsMenu.Quit)
             Particle p = new Particle((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble() * world.Width * 0.5, (float)rnd.NextDouble() * world.Height * 0.5, (float)rnd.NextDouble() / 1000000, (float)rnd.NextDouble() / 1000000);
             world.Particles.Add(p);
         }
-    }
+    //}
 
 
 
